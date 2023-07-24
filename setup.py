@@ -17,13 +17,21 @@ def get_requirments(file_path:str)->List[str]:
             
     return requirements    
 
+__version__ = '0.0.1'
+REPO_NAME = 'Facial_Impression_Recognition_Calassification'
+AUTHOR_USER_NAME = 'Meghdad-DTU'
+SRC_REPO = 'cnnClassifier'
+AUTHOR_EMAIL = 'mehdizadeh.iust@gmail.com'
+
+
 
 setup(
-    name= 'face impression recognition classification',
-    version = '0.0.1',
+    name= SRC_REPO,
+    version = __version__,
     author = 'Meghdad',
-    author_email = 'mehdizadeh.iust@gmail.com',
-    url="https://github.com/Meghdad-DTU/Facial_Impression_Recognition_Calassification",
+    author_email = AUTHOR_EMAIL,
+    url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",
+    packages_dir={"":"src"},
     packeges = find_packages(where='src'),
     install_requires = get_requirments('requirements.txt')
     )
