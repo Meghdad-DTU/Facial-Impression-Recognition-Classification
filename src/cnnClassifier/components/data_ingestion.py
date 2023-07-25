@@ -24,7 +24,18 @@ class DataIngestion:
             csv_string = body.read().decode('utf-8')
             df = pd.read_csv(StringIO(csv_string))
             df.to_csv(self.config.local_data_file, index=False, header=True)
-
             logging.info(f'{self.config.local_data_file} is downloaded!')
+
+            logging.info('Train, validation and test split for data initiated')
+            train_set = df[df.Usage == 'Training'].drop('Usage',axis=1)
+            val_set = df[df.Usage == 'PublicTest'].drop('Usage',axis=1)
+            test_set = df[df.Usage == 'PrivateTest'].drop('Usage',axis=1) 
+
+            train_set.to_csv(self.config.local_train_file, index=False, header=True)
+            val_set.to_csv(self.config.local_val_file, index=False, header=True)
+            test_set.to_csv(self.config.local_test_file, index=False, header=True)
+
+            logging.info("Train, validation and test split is done!")
+
         else:
-            logging.info(f"File alraedy exists of size : {get_size(Path(self.config.local_data_file))}")   
+            logging.info(f"File already exists of size : {get_size(Path(self.config.local_data_file))}")   

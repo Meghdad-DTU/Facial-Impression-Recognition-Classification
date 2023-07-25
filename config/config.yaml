@@ -4,3 +4,10 @@ artifacts_root: artifacts
 data_ingestion:
   root_dir: artifacts/data_ingestion
   local_data_file: artifacts/data_ingestion/data.csv
+  local_train_file: artifacts/data_ingestion/train.csv
+  local_val_file: artifacts/data_ingestion/validation.csv
+  local_test_file: artifacts/data_ingestion/test.csv
+
+data_transformation:
+  root_dir: artifacts/transformation  
+  local_preprocessor_file: artifacts/transformation/preprocessor.pkl
