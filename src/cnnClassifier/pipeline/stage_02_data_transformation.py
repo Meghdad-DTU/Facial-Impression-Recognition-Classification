@@ -18,8 +18,8 @@ class DataTransformationTrainingPipeline:
         config = configurationManeger()
         data_transformation_config = config.get_data_transformation_config()
         data_transformation = DataTransformation(config=data_transformation_config)
-        data = data_transformation.initiate_data_transformation()
-        return data
+        data_transformation.initiate_data_transformation()
+        
 
 
 if __name__ == '__main__':

@@ -9,7 +9,11 @@ data_ingestion:
   local_test_file: artifacts/data_ingestion/test.csv
 
 data_transformation:
-  root_dir: artifacts/transformation  
+  root_dir: artifacts/transformation
+  local_train_dir: artifacts/transformation/train
+  local_val_dir: artifacts/transformation/validation
+  local_test_dir: artifacts/transformation/test
+  local_target_file: artifacts/transformation/target_variables.pkl
   local_preprocessor_file: artifacts/transformation/preprocessor.pkl
 
 prepare_base_model:
@@ -21,4 +25,8 @@ prepare_callbacks:
   root_dir: artifacts/prepare_callbacks
   tensorboard_root_log_dir: artifacts/prepare_callbacks/tensorboard_log_dir
   ckeckpoint_model_filepath: artifacts/prepare_callbacks/checkpoint_dir/model.h5
+
+training:
+  root_dir: artifacts/training
+  trained_model_path: artifacts/training/model.h5
 

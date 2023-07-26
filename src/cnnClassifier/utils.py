@@ -83,7 +83,7 @@ def get_size(path: Path) -> str:
     return f"~ {size_in_kb} KB"
 
 #@ensure_annotations
-def pixel_to_image(data, img_height:int, img_width:int):
+def pixel_to_matrix(data, img_height:int, img_width:int):
     """
     convert a series of string numbers to a 3D matrix as imege format
 
@@ -100,9 +100,10 @@ def pixel_to_image(data, img_height:int, img_width:int):
         temp = np.asarray(temp).reshape(img_height, img_width)
         for j in range(3):
             images[i,:,:,j] = temp
-    images/= 255.0        
+    images        
 
     return images
+
 
 #@ensure_annotations
 def save_object(path: Path, obj:Any, h5=False):

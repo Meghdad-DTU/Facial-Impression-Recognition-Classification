@@ -42,13 +42,17 @@ class configurationManeger:
     def get_data_transformation_config(self) -> DataTransformationConfig:
         config = self.config.data_transformation             
 
-        create_directories([config.root_dir])
+        create_directories([config.root_dir, config.local_train_dir, config.local_val_dir, config.local_test_dir])
 
         data_trnsformation_config = DataTransformationConfig(
             root_dir = config.root_dir,
+            local_train_dir = config.local_train_dir,
+            local_val_dir = config.local_val_dir, 
+            local_test_dir = config.local_test_dir,
             local_train_file = self.config.data_ingestion.local_train_file,
             local_val_file = self.config.data_ingestion.local_val_file,
             local_test_file = self.config.data_ingestion.local_test_file,
+            local_target_file = config.local_target_file,
             local_preprocessor_file = config.local_preprocessor_file
 
         )

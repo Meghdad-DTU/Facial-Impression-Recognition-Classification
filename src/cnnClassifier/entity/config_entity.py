@@ -17,10 +17,15 @@ class DataIngestionConfig:
 @dataclass(frozen=True)
 class DataTransformationConfig:
     root_dir: Path
+    local_train_dir: Path
+    local_val_dir: Path
+    local_test_dir: Path
     local_train_file: Path
     local_val_file: Path
     local_test_file: Path
+    local_target_file: Path
     local_preprocessor_file: Path
+    
 
 @dataclass(frozen=True)
 class PrepareBaseModelConfig:
