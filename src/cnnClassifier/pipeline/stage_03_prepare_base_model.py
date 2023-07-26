@@ -1,30 +1,29 @@
 import sys
-from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
-
+from cnnClassifier.logger import logging
 from cnnClassifier.config.configuration import configurationManeger
-from cnnClassifier.components.data_ingestion import DataIngestion
+from cnnClassifier.components.prepare_base_model import PrepareBaseModel
 
 
 
-STAGE_NAME = "Data Ingestion Stage"
+STAGE_NAME = "Prepare Base Model Stage"
 
-class DataIngestionTrainingPipeline:
+class PrepareBaseModelTrainingPipeline:
     def __init__(self):
         pass
 
     def main(self):
         config = configurationManeger()
-        data_ingestion_config = config.get_data_ingestion_config()
-        data_ingestion = DataIngestion(config=data_ingestion_config)
-        data_ingestion.dowload_file()
+        prepare_base_model_config = config.get_prepare_base_model_config()
+        prepare_base_model = PrepareBaseModel(config=prepare_base_model_config)
+        prepare_base_model.get_base_model()
+        prepare_base_model.update_base_model()
+        
 
-        
-        
 if __name__ == '__main__':
     try:        
         logging.info(f'>>>>>>> stage {STAGE_NAME} started <<<<<<<<')
-        obj = DataIngestionTrainingPipeline()
+        obj = PrepareBaseModelTrainingPipeline()
         obj.main()
         logging.info(f'>>>>>>> stage {STAGE_NAME} completed <<<<<<<<')
     

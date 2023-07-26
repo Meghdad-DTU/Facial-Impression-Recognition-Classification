@@ -1,3 +1,8 @@
+
+import sys
+from cnnClassifier.logger import logging
+from cnnClassifier.exception import CustomException
+
 from cnnClassifier.config.configuration import configurationManeger
 from cnnClassifier.components.data_transformation import DataTransformation
 
@@ -15,3 +20,14 @@ class DataTransformationTrainingPipeline:
         data_transformation = DataTransformation(config=data_transformation_config)
         data = data_transformation.initiate_data_transformation()
         return data
+
+
+if __name__ == '__main__':
+    try:        
+        logging.info(f'>>>>>>> stage {STAGE_NAME} started <<<<<<<<')
+        obj = DataTransformationTrainingPipeline()
+        data = obj.main()
+        logging.info(f'>>>>>>> stage {STAGE_NAME} completed <<<<<<<<')
+    
+    except Exception as e:
+        raise CustomException(e, sys)
