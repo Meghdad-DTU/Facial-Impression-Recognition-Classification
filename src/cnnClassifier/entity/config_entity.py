@@ -17,14 +17,31 @@ class DataIngestionConfig:
 @dataclass(frozen=True)
 class DataTransformationConfig:
     root_dir: Path
-    local_train_dir: Path
-    local_val_dir: Path
-    local_test_dir: Path
+
+    local_train_angry_dir: Path
+    local_train_disgust_dir: Path
+    local_train_fear_dir: Path
+    local_train_happy_dir: Path
+    local_train_sad_dir: Path
+    local_train_surprise_dir: Path
+    local_train_nuetral_dir: Path
+    local_val_angry_dir: Path
+    local_val_disgust_dir: Path
+    local_val_fear_dir: Path
+    local_val_happy_dir: Path
+    local_val_sad_dir: Path
+    local_val_surprise_dir: Path
+    local_val_nuetral_dir: Path
+    local_test_angry_dir: Path
+    local_test_disgust_dir: Path
+    local_test_fear_dir: Path
+    local_test_happy_dir: Path
+    local_test_sad_dir: Path
+    local_test_surprise_dir: Path
+    local_test_nuetral_dir: Path
     local_train_file: Path
     local_val_file: Path
     local_test_file: Path
-    local_target_file: Path
-    local_preprocessor_file: Path
     
 
 @dataclass(frozen=True)

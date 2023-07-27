@@ -4,9 +4,8 @@ import os
 import pandas as pd
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
-from cnnClassifier.utils import pixel_to_matrix, save_object
+from cnnClassifier.utils import pixel_to_matrix
 
-from keras.utils import to_categorical
 from keras.preprocessing.image import save_img
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
@@ -52,38 +51,48 @@ class DataTransformation:
             logging.info('Read train, validation and test data completed')
 
             logging.info("Obtaining preprocessing object")
-            preprocessing_obj=self.get_data_transformer_object() 
-            pixel_column = 'pixels'
-            target_column_name = 'emotion'             
+            preprocessing_obj=self.get_data_transformer_object()    
 
+            emotion_path = {0: self.config.local_train_angry_dir,
+                            1: self.config.local_train_disgust_dir,
+                            2: self.config.local_train_fear_dir,
+                            3: self.config.local_train_happy_dir,
+                            4: self.config.local_train_sad_dir,
+                            5: self.config.local_train_surprise_dir,
+                            6: self.config.local_train_nuetral_dir}                 
+
+     
             logging.info(f"Applying preprocessing object on train, validation and test dataframes")
-            input_train_arr = preprocessing_obj.fit_transform(train_df[pixel_column])
-            for i in range(len(input_train_arr)):
-                path_file = os.path.join(self.config.local_train_dir, str(i)+'.png')
-                save_img(path_file, input_train_arr[i])
-            logging.info(f"Train set is saved as .png")         
+            emotions, images = preprocessing_obj.fit_transform(train_df)
+            i=1
+            for emotion, image in zip(emotions, images):
+                path_config = emotion_path[emotion]
+                path_file = os.path.join(path_config, str(i)+'.png')
+                save_img(path_file, image)
+                i+=1
+            logging.info(f"Train set is saved as .png")  
+            # update emotion_path for validation
+            for emotion, path in emotion_path.items():
+                path = path.replace('train', 'validation')
+                emotion_path[emotion] = path       
             
-            input_val_arr = preprocessing_obj.fit_transform(val_df[pixel_column])  
-            for i in range(len(input_val_arr)):
-                path_file = os.path.join(self.config.local_val_dir, str(i)+'.png')
-                save_img(path_file, input_val_arr[i])         
+            emotions, images = preprocessing_obj.fit_transform(val_df)  
+            i=1
+            for emotion, image in zip(emotions, images):
+                path_config = emotion_path[emotion]
+                path_file = os.path.join(path_config, str(i)+'.png')
+                save_img(path_file, image)
+                i+=1        
             logging.info(f"Validation set is saved as .png")
-            
-            input_test_arr = preprocessing_obj.transform(test_df[pixel_column]) 
-            for i in range(len(input_test_arr)):
-                path_file = os.path.join(self.config.local_test_dir, str(i)+'.png')
-                save_img(path_file, input_test_arr[i])  
-            logging.info(f"Test set is saved as .png")
-            
-
-            logging.info(f"Changing target variable format to match with keras")
-            target_train_arr = to_categorical(train_df[target_column_name], 7)   
-            target_val_arr = to_categorical(val_df[target_column_name], 7)  
-            target_test_arr = to_categorical(test_df[target_column_name], 7) 
-            
-            logging.info(f"Saving target variables as pickel file")
-            target_variable = {'train': target_train_arr, 'validation': target_val_arr, 'test': target_test_arr }           
-            save_object(path=self.config.local_target_file, obj=target_variable)
-            
-            logging.info('Saved preprocessing object')
-            save_object(path=self.config.local_preprocessor_file, obj=preprocessing_obj)
+            # update emotion_path for test
+            for emotion, path in emotion_path.items():
+                path = path.replace('validation', 'test')
+                emotion_path[emotion] = path
+            emotions, images = preprocessing_obj.transform(test_df) 
+            i=1
+            for emotion, image in zip(emotions, images):
+                path_config = emotion_path[emotion]
+                path_file = os.path.join(path_config, str(i)+'.png')
+                save_img(path_file, image)
+                i+=1  
+            logging.info(f"Test set is saved as .png")   

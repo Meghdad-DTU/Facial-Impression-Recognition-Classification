@@ -42,19 +42,56 @@ class configurationManeger:
     def get_data_transformation_config(self) -> DataTransformationConfig:
         config = self.config.data_transformation             
 
-        create_directories([config.root_dir, config.local_train_dir, config.local_val_dir, config.local_test_dir])
+        create_directories([config.root_dir,
+                            config.local_train_angry_dir,
+                            config.local_train_disgust_dir,
+                            config.local_train_fear_dir,
+                            config.local_train_happy_dir,
+                            config.local_train_sad_dir,
+                            config.local_train_surprise_dir,
+                            config.local_train_nuetral_dir,
+                            config.local_val_angry_dir,
+                            config.local_val_disgust_dir,
+                            config.local_val_fear_dir,
+                            config.local_val_happy_dir,
+                            config.local_val_sad_dir,
+                            config.local_val_surprise_dir,
+                            config.local_val_nuetral_dir,
+                            config.local_test_angry_dir,
+                            config.local_test_disgust_dir,
+                            config.local_test_fear_dir,
+                            config.local_test_happy_dir,
+                            config.local_test_sad_dir,
+                            config.local_test_surprise_dir,
+                            config.local_test_nuetral_dir]
+                            )
 
         data_trnsformation_config = DataTransformationConfig(
             root_dir = config.root_dir,
-            local_train_dir = config.local_train_dir,
-            local_val_dir = config.local_val_dir, 
-            local_test_dir = config.local_test_dir,
+            local_train_angry_dir= config.local_train_angry_dir,
+            local_train_disgust_dir= config.local_train_disgust_dir,
+            local_train_fear_dir= config.local_train_fear_dir,
+            local_train_happy_dir= config.local_train_happy_dir,
+            local_train_sad_dir= config.local_train_sad_dir,
+            local_train_surprise_dir= config.local_train_surprise_dir,
+            local_train_nuetral_dir= config.local_train_nuetral_dir,
+            local_val_angry_dir = config.local_val_angry_dir,
+            local_val_disgust_dir= config.local_val_disgust_dir,
+            local_val_fear_dir= config.local_val_fear_dir,
+            local_val_happy_dir= config.local_val_happy_dir,
+            local_val_sad_dir= config.local_val_sad_dir,
+            local_val_surprise_dir= config.local_val_surprise_dir,
+            local_val_nuetral_dir= config.local_val_nuetral_dir,
+            local_test_angry_dir= config.local_test_angry_dir,
+            local_test_disgust_dir= config.local_test_disgust_dir,
+            local_test_fear_dir= config.local_test_fear_dir,
+            local_test_happy_dir= config.local_test_happy_dir,
+            local_test_sad_dir= config.local_test_sad_dir,
+            local_test_surprise_dir= config.local_test_surprise_dir,
+            local_test_nuetral_dir= config.local_test_nuetral_dir,           
             local_train_file = self.config.data_ingestion.local_train_file,
             local_val_file = self.config.data_ingestion.local_val_file,
-            local_test_file = self.config.data_ingestion.local_test_file,
-            local_target_file = config.local_target_file,
-            local_preprocessor_file = config.local_preprocessor_file
-
+            local_test_file = self.config.data_ingestion.local_test_file
         )
 
         return data_trnsformation_config
