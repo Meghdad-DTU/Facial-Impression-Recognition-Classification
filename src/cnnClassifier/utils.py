@@ -83,32 +83,34 @@ def get_size(path: Path) -> str:
     return f"~ {size_in_kb} KB"
 
 #@ensure_annotations
-def pixel_to_matrix(data, img_height:int, img_width:int):
+def pixel_to_matrix(df:pd.DataFrame, img_height:int, img_width:int):
     """
     convert a series of string numbers to a 3D matrix as imege format
 
     Args:
-        data (Dataframe): data to be used for converting
+        df (Dataframe): data to be used for converting
         img_height (int): image height
         img_width (int): image width              
     """
     
     # Three channels with same pixels
-    images = np.empty((len(data), img_height, img_width, 3))
-    for i, pixel_string in enumerate(data):
-        temp = [float(pixel) for pixel in pixel_string.split(' ')]
+    images = np.empty((len(df), img_height, img_width, 3))
+    emotions = list()
+    for ind, row in df.iterrows():
+        temp = [float(pixel) for pixel in row['pixels'].split(' ')]
         temp = np.asarray(temp).reshape(img_height, img_width)
-        for j in range(3):
-            images[i,:,:,j] = temp
-    images        
+        for i in range(3):
+            images[ind,:,:,i] = temp
 
-    return images
+        emotions.append(row['emotion'])           
+
+    return emotions, images
 
 
 #@ensure_annotations
 def save_object(path: Path, obj:Any, h5=False):
     """
-    save data as pickel or h5 
+    save object as pickel or h5 
 
     Args:
         path (Path): path to .pkl or .h5 file
@@ -129,3 +131,24 @@ def save_object(path: Path, obj:Any, h5=False):
     
     except Exception as e:
             raise CustomException(e, sys)
+    
+def load_object(path:Path, h5=False):
+    """
+    load object as pickel or h5 
+
+    Args:
+        path (Path): path to .pkl or .h5 file
+        obj : object to be loaded 
+        h5 (boolean): if False, then the object is loaded as .pkl      
+    """
+    try:
+        if h5:
+            return load_model(path, compile=True)
+        else:
+            with open(path, 'rb') as file_obj:
+                return pickle.load(file_obj)
+            
+            logging.info(f"Object file loaded at {path}")
+        
+    except Exception as e:
+        raise CustomException(e, sys)

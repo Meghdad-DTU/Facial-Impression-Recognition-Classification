@@ -10,11 +10,31 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/transformation
-  local_train_dir: artifacts/transformation/train
-  local_val_dir: artifacts/transformation/validation
-  local_test_dir: artifacts/transformation/test
-  local_target_file: artifacts/transformation/target_variables.pkl
-  local_preprocessor_file: artifacts/transformation/preprocessor.pkl
+
+  local_train_angry_dir: artifacts/transformation/train/angry
+  local_train_disgust_dir: artifacts/transformation/train/disgust
+  local_train_fear_dir: artifacts/transformation/train/fear
+  local_train_happy_dir: artifacts/transformation/train/happy
+  local_train_sad_dir: artifacts/transformation/train/sad
+  local_train_surprise_dir: artifacts/transformation/train/surprise
+  local_train_nuetral_dir: artifacts/transformation/train/nuetral
+
+  local_val_angry_dir: artifacts/transformation/validation/angry
+  local_val_disgust_dir: artifacts/transformation/validation/disgust
+  local_val_fear_dir: artifacts/transformation/validation/fear
+  local_val_happy_dir: artifacts/transformation/validation/happy
+  local_val_sad_dir: artifacts/transformation/validation/sad
+  local_val_surprise_dir: artifacts/transformation/validation/surprise
+  local_val_nuetral_dir: artifacts/transformation/validation/nuetral
+
+  local_test_angry_dir: artifacts/transformation/test/angry
+  local_test_disgust_dir: artifacts/transformation/test/disgust
+  local_test_fear_dir: artifacts/transformation/test/fear
+  local_test_happy_dir: artifacts/transformation/test/happy
+  local_test_sad_dir: artifacts/transformation/test/sad
+  local_test_surprise_dir: artifacts/transformation/test/surprise
+  local_test_nuetral_dir: artifacts/transformation/test/nuetral
+  
 
 prepare_base_model:
   root_dir: artifacts/prepare_base_model
