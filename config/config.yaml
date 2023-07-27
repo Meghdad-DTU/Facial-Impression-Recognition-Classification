@@ -10,7 +10,7 @@ data_ingestion:
 
 data_transformation:
   root_dir: artifacts/transformation
-
+  
   local_train_angry_dir: artifacts/transformation/train/angry
   local_train_disgust_dir: artifacts/transformation/train/disgust
   local_train_fear_dir: artifacts/transformation/train/fear
