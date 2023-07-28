@@ -4,6 +4,9 @@ import yaml
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix, precision_recall_fscore_support
+
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
 import pickle
@@ -152,3 +155,51 @@ def load_object(path:Path, h5=False):
         
     except Exception as e:
         raise CustomException(e, sys)
+
+def model_loss(history, label2='Validation Loss'):
+    plt.figure(figsize=(8,4))
+    plt.plot(history.history['loss'], label='Train Loss')
+    plt.plot(history.history['val_loss'], label=label2)
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epochs')
+    plt.legend(loc='upper right')
+    plt.grid(linestyle="--")
+    plt.show();
+
+def confusion_matrix_display(y_true, y_pred, classes):
+    """
+    This function prints and plots the confusion matrix
+    Args:
+        y_true: the actual value of y
+        y_pred: the predicted valuye of y
+        classes: list of label classes to be predicted
+    """
+
+    cm = confusion_matrix(y_true, y_pred)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=classes)
+    disp.plot(cmap=plt.cm.Blues)
+    plt.show()
+
+def pandas_classification_report(y_true, y_pred, classes):
+    """
+    This function returns scikit learn output metrics.classification_report 
+    into CSV/tab-delimited format
+    Args:
+        y_true: the actual value of y
+        y_pred: the predicted valuye of y
+        classes: list of label classes to be predicted
+    """
+    metrics_summary = precision_recall_fscore_support(y_true=y_true, y_pred=y_pred)    
+    avg = list(precision_recall_fscore_support(y_true=y_true, y_pred=y_pred, average='weighted'))
+    metrics_sum_index = ['precision', 'recall', 'f1-score', 'support']
+    class_report_df = pd.DataFrame(list(metrics_summary), index=metrics_sum_index)
+
+    support = class_report_df.loc['support']
+    total = support.sum() 
+    avg[-1] = total
+
+    class_report_df['avg / total'] = avg              
+    df = class_report_df.T
+    df.index = classes + ['avg / total']
+    return  df
