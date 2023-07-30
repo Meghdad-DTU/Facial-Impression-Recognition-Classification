@@ -27,6 +27,29 @@ class PrepareBaseModel:
             for layer in model.layers[:-freeze_till]:
                 model.trainable = False
         
+        stacked_model=keras.models.Sequential()
+        stacked_model.add(model)
+        stacked_model.add(keras.layers.Dropout(0.5))
+        stacked_model.add(keras.layers.Flatten())
+        stacked_model.add(keras.layers.BatchNormalization())
+        stacked_model.add(keras.layers.Dense(32,kernel_initializer='he_uniform'))
+        stacked_model.add(keras.layers.BatchNormalization())
+        stacked_model.add(keras.layers.Activation('relu'))
+        stacked_model.add(keras.layers.Dropout(0.5))
+        stacked_model.add(keras.layers.Dense(32,kernel_initializer='he_uniform'))
+        stacked_model.add(keras.layers.BatchNormalization())
+        stacked_model.add(keras.layers.Activation('relu'))
+        stacked_model.add(keras.layers.Dropout(0.5))
+        stacked_model.add(keras.layers.Dense(32,kernel_initializer='he_uniform'))
+        stacked_model.add(keras.layers.BatchNormalization())
+        stacked_model.add(keras.layers.Activation('relu'))
+        stacked_model.add(keras.layers.Dense(units=classes, activation='softmax'))
+        
+        full_model = stacked_model
+
+        '''
+        # without stacked model
+        
         flatten_in = keras.layers.Flatten()(model.output)
         prediction = keras.layers.Dense(
             units=classes,
@@ -37,6 +60,7 @@ class PrepareBaseModel:
             inputs=model.input,
             outputs=prediction
         )
+        '''
 
         full_model.compile(
             optimizer=keras.optimizers.SGD(learning_rate=learning_rate),
@@ -51,11 +75,13 @@ class PrepareBaseModel:
         self.full_model = self._prepare_full_model(
             model = self.model,
             classes=self.config.params_classes,
-            freeze_all=True,
-            freeze_till=None,
+            freeze_all=False,
+            freeze_till=4,
             learning_rate = self.config.params_learning_rate
         )
 
         save_object(path=self.config.updated_model_path, obj=self.full_model, h5=True)
+
+        
 
         
