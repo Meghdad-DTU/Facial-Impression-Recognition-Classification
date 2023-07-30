@@ -124,7 +124,7 @@ class configurationManeger:
         prepare_callbacks_config = PrepareCallbacksConfig(
            root_dir= config.root_dir,
            tensorboard_root_log_dir= config.tensorboard_root_log_dir,
-           ckeckpoint_model_filepath=  config.ckeckpoint_model_filepath
-        )
+           ckeckpoint_model_filepath=  config.ckeckpoint_model_filepath,
+           patience = self.params.PATIENCE
 
-        return prepare_callbacks_config 
+        )

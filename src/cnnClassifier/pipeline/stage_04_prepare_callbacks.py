@@ -16,7 +16,7 @@ class PrepareCallbacksTrainingPipeline:
         config = configurationManeger()
         prepare_callbacks_config = config.get_prepare_callbacks_config()
         prepare_callbacks = PrepareCallbacks(config=prepare_callbacks_config)
-        callback_list = prepare_callbacks.get_tb_ckpt_callbacks()
+        callback_list = prepare_callbacks.get_tb_ckpt_es_callbacks()
         return callback_list
         
 

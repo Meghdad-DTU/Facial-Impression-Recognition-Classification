@@ -26,9 +26,15 @@ class PrepareCallbacks:
         return keras.callbacks.ModelCheckpoint(
                 filepath = self.config.ckeckpoint_model_filepath,
                 save_best_only = True)
+    
+    @property
+    def _create_es_callbacks(self):
+        return keras.callbacks.EarlyStopping(
+                monitor = 'val_loss',
+                patience = self.config.patience)
 
 
-    def get_tb_ckpt_callbacks(self):
-        return [self._create_tb_callbacks, self._create_ckpt_callbacks]
+    def get_tb_ckpt_es_callbacks(self):
+        return [self._create_tb_callbacks, self._create_ckpt_callbacks, self._create_es_callbacks]
     
 
