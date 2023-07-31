@@ -9,31 +9,31 @@ data_ingestion:
   local_test_file: artifacts/data_ingestion/test.csv
 
 data_transformation:
-  root_dir: artifacts/transformation
+  root_dir: artifacts/data_transformation
   
-  local_train_angry_dir: artifacts/transformation/train/angry
-  local_train_disgust_dir: artifacts/transformation/train/disgust
-  local_train_fear_dir: artifacts/transformation/train/fear
-  local_train_happy_dir: artifacts/transformation/train/happy
-  local_train_sad_dir: artifacts/transformation/train/sad
-  local_train_surprise_dir: artifacts/transformation/train/surprise
-  local_train_nuetral_dir: artifacts/transformation/train/nuetral
+  local_train_angry_dir: artifacts/data_transformation/train/angry
+  local_train_disgust_dir: artifacts/data_transformation/train/disgust
+  local_train_fear_dir: artifacts/data_transformation/train/fear
+  local_train_happy_dir: artifacts/data_transformation/train/happy
+  local_train_sad_dir: artifacts/data_transformation/train/sad
+  local_train_surprise_dir: artifacts/data_transformation/train/surprise
+  local_train_nuetral_dir: artifacts/data_transformation/train/nuetral
 
-  local_val_angry_dir: artifacts/transformation/validation/angry
-  local_val_disgust_dir: artifacts/transformation/validation/disgust
-  local_val_fear_dir: artifacts/transformation/validation/fear
-  local_val_happy_dir: artifacts/transformation/validation/happy
-  local_val_sad_dir: artifacts/transformation/validation/sad
-  local_val_surprise_dir: artifacts/transformation/validation/surprise
-  local_val_nuetral_dir: artifacts/transformation/validation/nuetral
+  local_val_angry_dir: artifacts/data_transformation/validation/angry
+  local_val_disgust_dir: artifacts/data_transformation/validation/disgust
+  local_val_fear_dir: artifacts/data_transformation/validation/fear
+  local_val_happy_dir: artifacts/data_transformation/validation/happy
+  local_val_sad_dir: artifacts/data_transformation/validation/sad
+  local_val_surprise_dir: artifacts/data_transformation/validation/surprise
+  local_val_nuetral_dir: artifacts/data_transformation/validation/nuetral
 
-  local_test_angry_dir: artifacts/transformation/test/angry
-  local_test_disgust_dir: artifacts/transformation/test/disgust
-  local_test_fear_dir: artifacts/transformation/test/fear
-  local_test_happy_dir: artifacts/transformation/test/happy
-  local_test_sad_dir: artifacts/transformation/test/sad
-  local_test_surprise_dir: artifacts/transformation/test/surprise
-  local_test_nuetral_dir: artifacts/transformation/test/nuetral
+  local_test_angry_dir: artifacts/data_transformation/test/angry
+  local_test_disgust_dir: artifacts/data_transformation/test/disgust
+  local_test_fear_dir: artifacts/data_transformation/test/fear
+  local_test_happy_dir: artifacts/data_transformation/test/happy
+  local_test_sad_dir: artifacts/data_transformation/test/sad
+  local_test_surprise_dir: artifacts/data_transformation/test/surprise
+  local_test_nuetral_dir: artifacts/data_transformation/test/nuetral
   
 
 prepare_base_model:

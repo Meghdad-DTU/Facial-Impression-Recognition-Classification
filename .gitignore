@@ -123,7 +123,6 @@ celerybeat.pid
 secrets.yaml
 
 # Environments
-artifacts
 .env
 .venv
 env/
@@ -155,6 +154,10 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# artifacts
+artifacts/data_ingestion/
+artifacts/data_transformation/
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
