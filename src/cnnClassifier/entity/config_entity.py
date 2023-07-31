@@ -61,3 +61,15 @@ class PrepareCallbacksConfig:
     tensorboard_root_log_dir: Path
     ckeckpoint_model_filepath: Path
     patience: int
+
+@dataclass(frozen=True)
+class TrainingConfig:
+    root_dir: Path
+    trained_model_path: Path
+    updated_base_model_path: Path
+    training_data: Path
+    validation_data: Path
+    params_epochs: int
+    params_batch_size: int
+    params_is_augmentation: bool
+    params_imgage_size: list

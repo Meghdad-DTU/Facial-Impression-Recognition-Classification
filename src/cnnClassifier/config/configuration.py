@@ -5,7 +5,8 @@ from cnnClassifier.utils import read_yaml, create_directories
 from cnnClassifier.entity.config_entity import (DataIngestionConfig, 
                                                 DataTransformationConfig,
                                                 PrepareBaseModelConfig, 
-                                                PrepareCallbacksConfig)
+                                                PrepareCallbacksConfig,
+                                                TrainingConfig)
 
 class configurationManeger:
     def __init__(self, 
@@ -128,3 +129,26 @@ class configurationManeger:
            patience = self.params.PATIENCE
 
         )
+
+        return prepare_callbacks_config
+
+    def get_training_config(self) -> TrainingConfig:
+        config= self.config.training
+        training_data_dir = os.path.dirname(self.config.data_transformation.local_train_angry_dir)
+        validation_data_dir = os.path.dirname(self.config.data_transformation.local_val_angry_dir)
+        
+        create_directories([config.root_dir])
+
+        training_config = TrainingConfig(
+        root_dir= config.root_dir,
+        trained_model_path= config.trained_model_path, 
+        updated_base_model_path= self.config.prepare_base_model.updated_model_path, 
+        training_data= training_data_dir,
+        validation_data= validation_data_dir, 
+        params_epochs= self.params.EPOCHS, 
+        params_batch_size= self.params.BATCH_SIZE, 
+        params_is_augmentation= self.params.AUGMENTATION,
+        params_imgage_size= self.params.IMAGE_SIZE
+        )
+
+        return training_config

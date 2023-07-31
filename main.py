@@ -1,4 +1,4 @@
-"""import sys
+import sys
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
 from cnnClassifier.pipeline.stage_01_data_ingestion import DataIngestionTrainingPipeline
@@ -28,7 +28,7 @@ try:
     logging.info(f'>>>>>>> {STAGE_NAME} completed <<<<<<<<')
     
 except Exception as e:
-    raise CustomException(e, sys)"""
+    raise CustomException(e, sys)
 
 import sys
 from cnnClassifier.logger import logging
@@ -42,6 +42,22 @@ try:
     obj = PrepareBaseModelTrainingPipeline()
     obj.main()
     logging.info(f'>>>>>>> {STAGE_NAME} completed <<<<<<<<')
+    
+except Exception as e:
+    raise CustomException(e, sys)
+
+import sys
+from cnnClassifier.logger import logging
+from cnnClassifier.exception import CustomException
+from cnnClassifier.pipeline.stage_04_training import ModelTrainingPipeline
+
+STAGE_NAME = "Model Training Stage"
+
+try:
+    logging.info(f'>>>>>>> stage {STAGE_NAME} started <<<<<<<<')
+    obj = ModelTrainingPipeline()
+    obj.main()
+    logging.info(f'>>>>>>> stage {STAGE_NAME} completed <<<<<<<<')
     
 except Exception as e:
     raise CustomException(e, sys)
