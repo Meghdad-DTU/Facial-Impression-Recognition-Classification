@@ -65,50 +65,49 @@ class PrepareBaseModel:
         else:
             assert input_shape is not None, " WARNING: Input shape mus be provided!"
             model = keras.models.Sequential()
-            model.add(keras.layers.Convolution2D(filters=16, kernel_size=(7, 7), padding='same', name='image_array', input_shape= input_shape))
-            model.add(keras.layers.BatchNormalization())
-            model.add(keras.layers.Convolution2D(filters=16, kernel_size=(7, 7), padding='same'))
+            model.add(keras.layers.Convolution2D(filters=64, kernel_size=(3, 3), padding='same', name='image_array', input_shape= input_shape))
             model.add(keras.layers.BatchNormalization())
             model.add(keras.layers.Activation('relu'))
-            model.add(keras.layers.AveragePooling2D(pool_size=(2, 2), padding='same'))
-            model.add(keras.layers.Dropout(.5))
-
-            model.add(keras.layers.Convolution2D(filters=32, kernel_size=(5, 5), padding='same'))
-            model.add(keras.layers.BatchNormalization())
-            model.add(keras.layers.Convolution2D(filters=32, kernel_size=(5, 5), padding='same'))
-            model.add(keras.layers.BatchNormalization())
-            model.add(keras.layers.Activation('relu'))
-            model.add(keras.layers.AveragePooling2D(pool_size=(2, 2), padding='same'))
-            model.add(keras.layers.Dropout(.5))
-
-            model.add(keras.layers.Convolution2D(filters=64, kernel_size=(3, 3), padding='same'))
-            model.add(keras.layers.BatchNormalization())
-            model.add(keras.layers.Convolution2D(filters=64, kernel_size=(3, 3), padding='same'))
-            model.add(keras.layers.BatchNormalization())
-            model.add(keras.layers.Activation('relu'))
-            model.add(keras.layers.AveragePooling2D(pool_size=(2, 2), padding='same'))
-            model.add(keras.layers.Dropout(.5))
-
-            model.add(keras.layers.Convolution2D(filters=128, kernel_size=(3, 3), padding='same'))
-            model.add(keras.layers.BatchNormalization())
-            model.add(keras.layers.Convolution2D(filters=128, kernel_size=(3, 3), padding='same'))
-            model.add(keras.layers.BatchNormalization())
-            model.add(keras.layers.Activation('relu'))
-            model.add(keras.layers.AveragePooling2D(pool_size=(2, 2), padding='same'))
-            model.add(keras.layers.Dropout(.5))
+            model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+            model.add(keras.layers.Dropout(0.25))
+            
+            
+            model.add(keras.layers.Convolution2D(filters=128, kernel_size=(5, 5), padding='same'))
+            model.add(keras.layers.BatchNormalization())    
+            model.add(keras.layers.Activation('relu'))        
+            model.add(keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'))
+            model.add(keras.layers.Dropout(0.25))
 
             model.add(keras.layers.Convolution2D(filters=256, kernel_size=(3, 3), padding='same'))
+            model.add(keras.layers.BatchNormalization())           
+            model.add(keras.layers.Activation('relu'))
+            model.add(keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'))
+            model.add(keras.layers.Dropout(0.25))
 
+            model.add(keras.layers.Convolution2D(filters=512, kernel_size=(3, 3), padding='same'))
+            model.add(keras.layers.BatchNormalization())          
+            model.add(keras.layers.Activation('relu'))
+            model.add(keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'))
+            model.add(keras.layers.Dropout(0.25))
+
+            model.add(keras.layers.Flatten())
+            model.add(keras.layers.Dense(256))
             model.add(keras.layers.BatchNormalization())
-            model.add(keras.layers.Convolution2D(filters= classes, kernel_size=(3, 3), padding='same'))
-            model.add(keras.layers.GlobalAveragePooling2D())
-            model.add(keras.layers.Activation('softmax',name='predictions'))
+            model.add(keras.layers.Activation('relu'))
+            model.add(keras.layers.Dropout(0.25))
+
+            model.add(keras.layers.Dense(512))
+            model.add(keras.layers.BatchNormalization())
+            model.add(keras.layers.Activation('relu'))
+            model.add(keras.layers.Dropout(0.25))
+
+            model.add(keras.layers.Dense(classes, 'softmax', name='predictions'))
         
         
         full_model = model            
 
         full_model.compile(
-            optimizer=keras.optimizers.SGD(learning_rate=learning_rate),
+            optimizer=keras.optimizers.Adam(learning_rate=learning_rate),
             loss = keras.losses.CategoricalCrossentropy(),
             metrics=['accuracy']
                            )
@@ -128,7 +127,5 @@ class PrepareBaseModel:
         )
 
         save_object(path=self.config.updated_model_path, obj=self.full_model, h5=True)
-
-        
 
         
