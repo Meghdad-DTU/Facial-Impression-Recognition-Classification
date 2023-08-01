@@ -1,4 +1,4 @@
-import sys
+'''import sys
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
 from cnnClassifier.pipeline.stage_01_data_ingestion import DataIngestionTrainingPipeline
@@ -13,7 +13,7 @@ try:
     
 except Exception as e:
     raise CustomException(e, sys)
-
+#############################################################################################
 import sys
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
@@ -29,7 +29,7 @@ try:
     
 except Exception as e:
     raise CustomException(e, sys)
-
+##############################################################################################
 import sys
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
@@ -45,7 +45,7 @@ try:
     
 except Exception as e:
     raise CustomException(e, sys)
-
+###############################################################################################
 import sys
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
@@ -61,3 +61,20 @@ try:
     
 except Exception as e:
     raise CustomException(e, sys)
+###############################################################################################'''
+import sys
+from cnnClassifier.logger import logging
+from cnnClassifier.exception import CustomException
+from cnnClassifier.pipeline.stage_05_validation import ModelValidationPipeline
+
+STAGE_NAME = "Model Validation Stage"
+
+if __name__ == '__main__':
+    try:        
+        logging.info(f'>>>>>>> stage {STAGE_NAME} started <<<<<<<<')
+        obj = ModelValidationPipeline()
+        obj.main()
+        logging.info(f'>>>>>>> stage {STAGE_NAME} completed <<<<<<<<')
+    
+    except Exception as e:
+        raise CustomException(e, sys)

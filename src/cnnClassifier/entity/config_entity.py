@@ -55,12 +55,14 @@ class PrepareBaseModelConfig:
     params_weights: str
     params_classes: int
 
+
 @dataclass(frozen=True)
 class PrepareCallbacksConfig:
     root_dir: Path
     tensorboard_root_log_dir: Path
     ckeckpoint_model_filepath: Path
     patience: int
+
 
 @dataclass(frozen=True)
 class TrainingConfig:
@@ -73,3 +75,12 @@ class TrainingConfig:
     params_batch_size: int
     params_is_augmentation: bool
     params_imgage_size: list
+
+
+@dataclass(frozen=True)
+class EvaluationConfig:
+    path_of_model: Path    
+    validation_data: Path
+    all_params: dict
+    params_image_size: list
+    params_batch_size: int

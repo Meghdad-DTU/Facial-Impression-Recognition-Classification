@@ -1,12 +1,14 @@
 
 import os
+from pathlib import Path
 from cnnClassifier.constants import *
 from cnnClassifier.utils import read_yaml, create_directories
 from cnnClassifier.entity.config_entity import (DataIngestionConfig, 
                                                 DataTransformationConfig,
                                                 PrepareBaseModelConfig, 
                                                 PrepareCallbacksConfig,
-                                                TrainingConfig)
+                                                TrainingConfig,
+                                                EvaluationConfig)
 
 class configurationManeger:
     def __init__(self, 
@@ -152,3 +154,14 @@ class configurationManeger:
         )
 
         return training_config
+    
+    def get_validation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model= Path('artifacts/training/model.h5'),           
+            validation_data= Path('artifacts/data_transformation/validation/'),
+            all_params = self.params,
+            params_image_size= self.params.IMAGE_SIZE,
+            params_batch_size= self.params.BATCH_SIZE
+            )
+        
+        return eval_config
