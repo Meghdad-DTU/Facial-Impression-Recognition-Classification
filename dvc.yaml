@@ -47,18 +47,18 @@ stages:
     outs:
       - artifacts/training/model.h5
 
-    evaluation:
-      cmd: python src/cnnClassifier/pipeline/stage_05_validation.py 
-      deps:
-        - src/cnnClassifier/pipeline/stage_05_validation.py 
-        - config/config.yaml
-        - artifacts/data_transformation/validation
-        - artifacts/training/model.h5
-      params:
-        - IMAGE_SIZE
-        - BATCH_SIZE
-      metrics:
-      - score.json:
+  evaluation:
+    cmd: python src/cnnClassifier/pipeline/stage_05_validation.py 
+    deps:
+      - src/cnnClassifier/pipeline/stage_05_validation.py 
+      - config/config.yaml
+      - artifacts/data_transformation/validation
+      - artifacts/training/model.h5
+    params:
+      - IMAGE_SIZE
+      - BATCH_SIZE
+    metrics:
+    - score.json:
         cache: false
 
 

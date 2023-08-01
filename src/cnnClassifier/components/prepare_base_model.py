@@ -63,16 +63,22 @@ class PrepareBaseModel:
             '''
         
         else:
-            assert input_shape is not None, " WARNING: Input shape mus be provided!"
+            assert input_shape is not None, " WARNING: Input shape must be provided!"
             model = keras.models.Sequential()
             model.add(keras.layers.Convolution2D(filters=64, kernel_size=(3, 3), padding='same', name='image_array', input_shape= input_shape))
             model.add(keras.layers.BatchNormalization())
             model.add(keras.layers.Activation('relu'))
             model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
             model.add(keras.layers.Dropout(0.25))
+
+            model.add(keras.layers.Convolution2D(filters=64, kernel_size=(3, 3), padding='same'))
+            model.add(keras.layers.BatchNormalization())    
+            model.add(keras.layers.Activation('relu'))        
+            model.add(keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'))
+            model.add(keras.layers.Dropout(0.25))
             
             
-            model.add(keras.layers.Convolution2D(filters=128, kernel_size=(5, 5), padding='same'))
+            model.add(keras.layers.Convolution2D(filters=128, kernel_size=(3, 3), padding='same'))
             model.add(keras.layers.BatchNormalization())    
             model.add(keras.layers.Activation('relu'))        
             model.add(keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'))
