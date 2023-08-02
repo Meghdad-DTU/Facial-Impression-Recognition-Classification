@@ -25,7 +25,10 @@ class Training:
         dataflow_kwargs = dict(
             target_size=self.config.params_imgage_size[:-1],            
             batch_size = self.config.params_batch_size,
-            interpolation= 'bilinear'
+            interpolation= 'bilinear',
+            # Important: if images have only one channel, color mode must be added
+            color_mode="grayscale"
+
         )
         ## NOTE: Keras generator alway looks for subfolders (representing the classes). Images insight the subfolders are associated with a class.
         if self.config.params_is_augmentation:

@@ -86,7 +86,7 @@ def get_size(path: Path) -> str:
     return f"~ {size_in_kb} KB"
 
 #@ensure_annotations
-def pixel_to_matrix(df:pd.DataFrame, img_height:int, img_width:int):
+def pixel_to_matrix(df:pd.DataFrame, img_height:int, img_width:int, rgb=False):
     """
     convert a series of string numbers to a 3D matrix as imege format
 
@@ -97,12 +97,17 @@ def pixel_to_matrix(df:pd.DataFrame, img_height:int, img_width:int):
     """
     
     # Three channels with same pixels
-    images = np.empty((len(df), img_height, img_width, 3))
+    if rgb:
+        channel = 3        
+    else:
+        channel = 1
+        
+    images = np.empty((len(df), img_height, img_width, channel))
     emotions = list()
     for ind, row in df.iterrows():
         temp = [float(pixel) for pixel in row['pixels'].split(' ')]
         temp = np.asarray(temp).reshape(img_height, img_width)
-        for i in range(3):
+        for i in range(channel):
             images[ind,:,:,i] = temp
 
         emotions.append(row['emotion'])           
