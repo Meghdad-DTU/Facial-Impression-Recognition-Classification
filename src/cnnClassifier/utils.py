@@ -108,7 +108,7 @@ def pixel_to_matrix(df:pd.DataFrame, img_height:int, img_width:int, rgb=False):
         temp = [float(pixel) for pixel in row['pixels'].split(' ')]
         temp = np.asarray(temp).reshape(img_height, img_width)
         for i in range(channel):
-            images[ind,:,:,i] = temp
+            images[ind,:,:,i] = temp.astype('float32')
 
         emotions.append(row['emotion'])           
 
@@ -187,15 +187,24 @@ def load_object(path:Path, h5=False):
     except Exception as e:
         raise CustomException(e, sys)
 
-def model_loss(history, label2='Validation Loss'):
-    plt.figure(figsize=(8,4))
-    plt.plot(history.history['loss'], label='Train Loss')
-    plt.plot(history.history['val_loss'], label=label2)
-    plt.title('model loss')
-    plt.ylabel('loss')
-    plt.xlabel('epochs')
-    plt.legend(loc='upper right')
-    plt.grid(linestyle="--")
+def model_loss(history):
+    plt.figure(figsize=(10,5))
+
+    ColNames = {'model loss':['loss', 'val_loss'],
+                'model_accuracy':['accuracy', 'val_accuracy']}
+    
+    i=1
+    for ColName, _ in ColNames.items():   
+        plt.subplot(1,2 , i)     
+        plt.plot(history.history[ColNames[ColName][0]], label='Train')
+        plt.plot(history.history[ColNames[ColName][1]], label='Validation')
+        plt.title(ColName)
+        plt.ylabel(ColNames[ColName][0])
+        plt.xlabel('epochs')
+        plt.legend(loc='upper right')
+        plt.grid(linestyle="--")
+        plt.tight_layout()
+        i+=1
     plt.show();
 
 def confusion_matrix_display(y_true, y_pred, classes):
