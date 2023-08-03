@@ -30,7 +30,7 @@ try:
 except Exception as e:
     raise CustomException(e, sys)
 ##############################################################################################'''
-import sys
+'''import sys
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
 from cnnClassifier.pipeline.stage_03_prepare_base_model import PrepareBaseModelTrainingPipeline
@@ -61,7 +61,7 @@ try:
     
 except Exception as e:
     raise CustomException(e, sys)
-###############################################################################################
+###############################################################################################'''
 import sys
 from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
