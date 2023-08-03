@@ -132,14 +132,16 @@ def save_model(h5_path: Path, json_path: Path, model: Any):
     logging.info(f"model file saved at {h5_path}!")
 
 def load_model(h5_path:Path, json_path:Path):
-        #  loading the model in modular approach
-        json_file = open(json_path, 'r')
+    # load model from JSON file
+    with open(json_path, "r") as json_file:
         loaded_model_json = json_file.read()
-        json_file.close()
-        model = model_from_json(loaded_model_json)
-        # load weights into new model
-        model.load_weights(h5_path)        
-        return model 
+        loaded_model = model_from_json(loaded_model_json)
+
+        
+    # load weights into new model
+    loaded_model.load_weights(h5_path)  
+    loaded_model._make_predict_function()    
+    return loaded_model 
 
 #@ensure_annotations
 def save_object(path: Path, obj:Any, h5=False):
