@@ -40,6 +40,7 @@ prepare_base_model:
   root_dir: artifacts/prepare_base_model
   model_path: artifacts/prepare_base_model/base_model.h5
   updated_model_path: artifacts/prepare_base_model/base_model_updated.h5
+  updated_model_json_path: artifacts/prepare_base_model/base_model_updated.json
 
 prepare_callbacks:
   root_dir: artifacts/prepare_callbacks
@@ -49,4 +50,5 @@ prepare_callbacks:
 training:
   root_dir: artifacts/training
   trained_model_path: artifacts/training/model.h5
+  trained_model_json_path: artifacts/training/model.json
 

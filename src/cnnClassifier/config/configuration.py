@@ -108,6 +108,7 @@ class configurationManeger:
             root_dir = config.root_dir,           
             model_path = config.model_path,
             updated_model_path = config.updated_model_path,
+            updated_model_json_path = config.updated_model_json_path,
             params_image_size = self.params.IMAGE_SIZE,
             params_learning_rate = self.params.LEARNING_RATE,
             params_include_top = self.params.INCLUDE_TOP,
@@ -144,21 +145,27 @@ class configurationManeger:
         training_config = TrainingConfig(
         root_dir= config.root_dir,
         trained_model_path= config.trained_model_path, 
-        updated_base_model_path= self.config.prepare_base_model.updated_model_path, 
+        trained_model_json_path = config.trained_model_json_path,
+        updated_model_path= self.config.prepare_base_model.updated_model_path, 
+        updated_model_json_path = self.config.prepare_base_model.updated_model_json_path,
         training_data= training_data_dir,
         validation_data= validation_data_dir, 
         params_epochs= self.params.EPOCHS, 
         params_batch_size= self.params.BATCH_SIZE, 
         params_is_augmentation= self.params.AUGMENTATION,
-        params_imgage_size= self.params.IMAGE_SIZE
+        params_imgage_size= self.params.IMAGE_SIZE,
+        learning_rate= self.params.LEARNING_RATE
+        
         )
 
         return training_config
+
     
     def get_validation_config(self) -> EvaluationConfig:
         eval_config = EvaluationConfig(
-            path_of_model= Path('artifacts/training/model.h5'),           
-            validation_data= Path('artifacts/data_transformation/validation/'),
+            path_of_model= self.config.training.trained_model_path,
+            path_of_model_json=  self.config.training.trained_model_json_path,    
+            test_data= Path('artifacts/data_transformation/test'),
             all_params = self.params,
             params_image_size= self.params.IMAGE_SIZE,
             params_batch_size= self.params.BATCH_SIZE

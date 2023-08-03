@@ -1,8 +1,7 @@
 
 from cnnClassifier.config.configuration import EvaluationConfig
-from cnnClassifier.utils import load_object, save_json
+from cnnClassifier.utils import load_model, save_json
 import keras
-
 
 
 
@@ -10,14 +9,14 @@ class Evaluation:
     def __init__(self, config: EvaluationConfig):
         self.config = config
     
-    def _valid_generator(self):
+    def _test_generator(self):
 
         datagenerator_kwargs = dict(
             # Dividing the pixels by 255 for normalization  => range(0,1)
             # Scaling the pixels value in range(-1,1) by subtracting 0.5 and multiply 2
-            rescale= ((1./255) - 0.5)*2,            
-            # if there was no validation set:
-            # validation_split = 0.20
+            rescale= ((1./255) - 0.5)*2           
+            
+            
         )
 
         dataflow_kwargs = dict(
@@ -32,20 +31,25 @@ class Evaluation:
         )
         
         ## NOTE: subset is added when we use validation_split, where directory for both training and validation is the same.
-        ## NOTE: shuffle= False for validation as we want to check the performance model using predict_generator 
-        self.valid_generator = datagenerator.flow_from_directory(
-            directory= self.config.validation_data,
-            #subset= "validation",
+        ## NOTE: shuffle= False for test as we want to check the performance model using predict_generator 
+        self.test_generator = datagenerator.flow_from_directory(
+            directory= self.config.test_data,            
             shuffle= False,            
             **dataflow_kwargs
             )
-        
+       
          
     def evaluation(self):
-        model = load_object(path=self.config.path_of_model, h5=True)
-        self._valid_generator()
-        self.score = model.evaluate(self.valid_generator)
+        model = load_model(h5_path= self.config.path_of_model, json_path= self.config.path_of_model_json)    
+        model.compile(optimizer=keras.optimizers.Adam(learning_rate=self.config.all_params['LEARNING_RATE']),
+            loss = keras.losses.CategoricalCrossentropy(),
+            metrics=['accuracy']
+                           )  
+          
+        self._test_generator()
+        self.score = model.evaluate(self.test_generator)
 
     def save_score(self):
         scores = {'loss': self.score[0], 'accuracy': self.score[1]}
         save_json(path='scores.json', data=scores)
+

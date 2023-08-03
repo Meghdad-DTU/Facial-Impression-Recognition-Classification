@@ -1,6 +1,6 @@
 
 import keras
-from cnnClassifier.utils import save_object
+from cnnClassifier.utils import save_object, save_model
 from cnnClassifier.config.configuration import PrepareBaseModelConfig
 
 
@@ -10,6 +10,7 @@ class PrepareBaseModel:
         self.config = config
 
     # In case, vgg16 is about to used as the base model
+    # NOTE: input_shape must have three channels
     def get_base_model(self):
         self.model = keras.applications.vgg16.VGG16(
             #input_shape = self.config.params_image_size,
@@ -17,7 +18,7 @@ class PrepareBaseModel:
             include_top = self.config.params_include_top
         )
 
-        save_object(path=self.config.model_path, obj= self.model, h5=True)
+        #save_object(path=self.config.model_path, obj= self.model, h5=True)
 
     @staticmethod
     def _prepare_full_model(base_model, classes, freeze_all, freeze_till, learning_rate, input_shape=None):
@@ -27,7 +28,8 @@ class PrepareBaseModel:
                     base_model.trainable = False
             elif (freeze_till is not None) and (freeze_till > 0):
                 for layer in base_model.layers[:-freeze_till]:
-                    base_model.trainable = False  
+                    base_model.trainable = False            
+
         
             flatten_in = keras.layers.Flatten()(base_model.output)
             prediction = keras.layers.Dense(
@@ -42,18 +44,12 @@ class PrepareBaseModel:
             
         
         else:
-            assert input_shape is not None, " WARNING: Input shape must be provided!"
+            assert input_shape is not None, " WARNING: Input shape mus be provided!"
             model = keras.models.Sequential()
-            model.add(keras.layers.Convolution2D(filters=32, kernel_size=(3, 3), padding='same', name='image_array', input_shape= input_shape))
+            model.add(keras.layers.Convolution2D(filters=64, kernel_size=(3, 3), padding='same', name='image_array', input_shape= input_shape))
             model.add(keras.layers.BatchNormalization())
             model.add(keras.layers.Activation('relu'))
             model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-            model.add(keras.layers.Dropout(0.25))
-
-            model.add(keras.layers.Convolution2D(filters=64, kernel_size=(3, 3), padding='same'))
-            model.add(keras.layers.BatchNormalization())    
-            model.add(keras.layers.Activation('relu'))        
-            model.add(keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'))
             model.add(keras.layers.Dropout(0.25))
             
             
@@ -111,6 +107,8 @@ class PrepareBaseModel:
 
         )
 
-        save_object(path=self.config.updated_model_path, obj=self.full_model, h5=True)
+        save_model(h5_path= self.config.updated_model_path, 
+                   json_path= self.config.updated_model_json_path, 
+                   model=self.full_model)
 
         

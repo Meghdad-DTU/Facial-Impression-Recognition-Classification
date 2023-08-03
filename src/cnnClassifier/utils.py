@@ -11,6 +11,7 @@ from cnnClassifier.logger import logging
 from cnnClassifier.exception import CustomException
 import pickle
 from keras.models import save_model, load_model
+from keras.models import model_from_json
 
 import json
 import joblib
@@ -39,8 +40,7 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
             return ConfigBox(content)
             
     except Exception as e:
-        raise CustomException(e, sys)
-    
+        raise CustomException(e, sys)    
 
 @ensure_annotations
 def create_directories(path_to_directories: list, verbos=True):
@@ -114,6 +114,32 @@ def pixel_to_matrix(df:pd.DataFrame, img_height:int, img_width:int, rgb=False):
 
     return emotions, images
 
+def save_model(h5_path: Path, json_path: Path, model: Any):
+    """
+    serialize model weights to HDF5
+
+    Args:
+        h5_path (Path): path to h5 file
+        json_path (Path): path to json file
+        model : model be saved in the file
+         
+    """
+    model.save_weights(h5_path)
+    model_json = model.to_json()
+    with open(json_path, "w") as json_file:
+        json_file.write(model_json)
+
+    logging.info(f"model file saved at {h5_path}!")
+
+def load_model(h5_path:Path, json_path:Path):
+        #  loading the model in modular approach
+        json_file = open(json_path, 'r')
+        loaded_model_json = json_file.read()
+        json_file.close()
+        model = model_from_json(loaded_model_json)
+        # load weights into new model
+        model.load_weights(h5_path)        
+        return model 
 
 #@ensure_annotations
 def save_object(path: Path, obj:Any, h5=False):

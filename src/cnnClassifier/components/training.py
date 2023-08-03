@@ -2,7 +2,7 @@ import pandas as pd
 import keras
 import matplotlib.pyplot as plt
 from cnnClassifier.config.configuration import TrainingConfig
-from cnnClassifier.utils import load_object, save_object, model_loss, confusion_matrix_display, pandas_classification_report
+from cnnClassifier.utils import load_model, save_model, model_loss, confusion_matrix_display, pandas_classification_report
 import keras
 
 class Training:
@@ -10,7 +10,11 @@ class Training:
         self.config = config
 
     def get_base_model(self):
-        self.model = load_object(path= self.config.updated_base_model_path, h5=True)
+        self.model = load_model(h5_path= self.config.updated_model_path , json_path = self.config.updated_model_json_path)
+        self.model.compile(optimizer=keras.optimizers.Adam(learning_rate=self.config.learning_rate),
+            loss = keras.losses.CategoricalCrossentropy(),
+            metrics=['accuracy']
+                           )   
 
     def train_valid_generator(self):
 
@@ -26,7 +30,6 @@ class Training:
             target_size=self.config.params_imgage_size[:-1],            
             batch_size = self.config.params_batch_size,
             interpolation= 'bilinear',
-            # Important: if images have only one channel, color mode must be added
             color_mode="grayscale"
 
         )
@@ -87,4 +90,4 @@ class Training:
         confusion_matrix_display(self.valid_generator.classes, predict_classes, labels)
         
 
-        save_object(path= self.config.trained_model_path, obj=self.model, h5=True)  
+        save_model(h5_path= self.config.trained_model_path, json_path=self.config.trained_model_json_path, model=self.model)  
