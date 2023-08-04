@@ -25,6 +25,7 @@ class Prediction:
         #faces = facecasc.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=10)
         faces = facecasc.detectMultiScale(image, scaleFactor=1.2, minNeighbors=6)
         print("No of faces : ",len(faces))
+        predict = []
         i =1
         for (x, y, w, h) in faces:
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 1)
@@ -38,20 +39,8 @@ class Prediction:
             
             prediction = model.predict(cropped_img)
             maxindex = int(np.argmax(prediction))                              
-            print("person ",i," : ",emotion_dict[maxindex])           
-            cv2.putText(image, emotion_dict[maxindex], (x+10, y-20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-            
-            cv2.imshow("Face Detector", image)
-            k=cv2.waitKey(2000)
-        cv2.destroyAllWindows()
-        
-        file_name = os.path.basename(self.filename )
-        dir_name = os.path.dirname(self.filename) 
-        cv2.imwrite(os.path.join(dir_name, 'pred_'+file_name), image)
+            dic = {"person "+str(i) : emotion_dict[maxindex]}         
+            predict.append(dic)
+            i+=1        
 
-        image = cv2.imread(os.path.join(dir_name, 'pred_'+file_name))
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        plt.imshow(image)
-        
-
-        return plt.show()
+        return predict

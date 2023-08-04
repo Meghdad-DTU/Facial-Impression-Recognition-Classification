@@ -56,6 +56,7 @@ def create_directories(path_to_directories: list, verbos=True):
             logging.info(f'created directory at {path}')
 
 
+
 #@ensure_annotations
 def save_json(path:Path, data:dict):
     """
@@ -84,6 +85,14 @@ def get_size(path: Path) -> str:
     """
     size_in_kb = round(os.path.getsize(path)/1024)
     return f"~ {size_in_kb} KB"
+
+
+def decodeImage(imgstring, filename):
+    imgdata = base64.b64decode(imgstring)
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
+        f.close()
+
 
 #@ensure_annotations
 def pixel_to_matrix(df:pd.DataFrame, img_height:int, img_width:int, rgb=False):
