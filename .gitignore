@@ -125,6 +125,7 @@ secrets.yaml
 # Environments
 .env
 .venv
+venv-3.8/
 env/
 venv/
 ENV/
