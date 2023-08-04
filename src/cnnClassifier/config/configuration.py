@@ -8,7 +8,8 @@ from cnnClassifier.entity.config_entity import (DataIngestionConfig,
                                                 PrepareBaseModelConfig, 
                                                 PrepareCallbacksConfig,
                                                 TrainingConfig,
-                                                EvaluationConfig)
+                                                EvaluationConfig,
+                                                PredictionConfig)
 
 class configurationManeger:
     def __init__(self, 
@@ -172,3 +173,12 @@ class configurationManeger:
             )
         
         return eval_config
+    
+    def get_prediction_config(self) -> PredictionConfig:
+        prediction_config = PredictionConfig(
+            path_of_model= self.config.training.trained_model_path,    
+            path_of_model_json = self.config.training.trained_model_json_path,       
+            pre_trained_face_detector = 'haarcascade_frontalface_default.xml'           
+            )
+        
+        return prediction_config

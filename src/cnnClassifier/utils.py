@@ -119,8 +119,8 @@ def save_model(h5_path: Path, json_path: Path, model: Any):
     serialize model weights to HDF5
 
     Args:
-        h5_path (Path): path to h5 file
-        json_path (Path): path to json file
+        h5_path (Path): path to h5 file, model_weights_file
+        json_path (Path): path to json file, model_json_file
         model : model be saved in the file
          
     """
@@ -132,6 +132,14 @@ def save_model(h5_path: Path, json_path: Path, model: Any):
     logging.info(f"model file saved at {h5_path}!")
 
 def load_model(h5_path:Path, json_path:Path):
+    """
+    load model HDF5
+
+    Args:
+        h5_path (Path): path to h5 file, model_weights_file
+        json_path (Path): path to json file, model_json_file        
+         
+    """
     # load model from JSON file
     with open(json_path, "r") as json_file:
         loaded_model_json = json_file.read()
@@ -139,8 +147,8 @@ def load_model(h5_path:Path, json_path:Path):
 
         
     # load weights into new model
-    loaded_model.load_weights(h5_path)  
-    loaded_model._make_predict_function()    
+    loaded_model.load_weights(h5_path) 
+    logging.info(f"model file loaded!")       
     return loaded_model 
 
 #@ensure_annotations
