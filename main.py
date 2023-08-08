@@ -78,20 +78,3 @@ if __name__ == '__main__':
     
     except Exception as e:
         raise CustomException(e, sys)'''
-###############################################################################################    
-import sys
-from cnnClassifier.logger import logging
-from cnnClassifier.exception import CustomException
-from cnnClassifier.pipeline.stage_06_prediction import PredictionPipeline
-
-STAGE_NAME = "Prediction Stage"
-
-if __name__ == '__main__':
-    try:        
-        logging.info(f'>>>>>>> stage {STAGE_NAME} started <<<<<<<<')
-        obj = PredictionPipeline('images/img2.jpg')
-        obj.main()
-        logging.info(f'>>>>>>> stage {STAGE_NAME} completed <<<<<<<<')
-    
-    except Exception as e:
-        raise CustomException(e, sys)

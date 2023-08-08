@@ -1,8 +1,12 @@
+import sys
+sys.path.append('/home/paladin/Downloads/Facial_Impression_Recognition_Calassification/src')
+
 from flask import Flask, request, jsonify, render_template
 import os
 from flask_cors import CORS, cross_origin
 from cnnClassifier.utils import decodeImage
-from cnnClassifier.pipeline.stage_06_prediction import PredictionPipeline
+from cnnClassifier.config.configuration import configurationManeger
+from cnnClassifier.pipeline.prediction import PredictionPipeline
 
 
 os.putenv('LANG', 'en_US.UTF-8')
@@ -15,7 +19,9 @@ CORS(app)
 class ClientApp:
     def __init__(self):
         self.filename = "inputImage.jpg"
-        self.classifier = PredictionPipeline(self.filename)
+        config = configurationManeger()
+        pred_config = config.get_prediction_config()
+        self.classifier = PredictionPipeline(self.filename, pred_config)
 
 
 @app.route("/", methods=['GET'])
@@ -37,12 +43,12 @@ def trainRoute():
 def predictRoute():
     image = request.json['image']
     decodeImage(image, clApp.filename)
-    result = clApp.classifier.predict()
-    return jsonify(result)
+    predict = clApp.classifier.predict()    
+    return jsonify([predict])
 
 
 if __name__ == "__main__":
     clApp = ClientApp()
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host='localhost', port=8080, debug=True)
     # app.run(host='0.0.0.0', port=8080) #for AWS
     #app.run(host='0.0.0.0', port=80) #for AZURE

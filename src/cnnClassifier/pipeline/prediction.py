@@ -1,18 +1,21 @@
+import sys
+sys.path.append('/home/paladin/Downloads/Facial_Impression_Recognition_Calassification/src')
+
+
 import os
 import numpy as np
-import matplotlib.pyplot as plt
+from cnnClassifier.exception import CustomException
+from cnnClassifier.logger import logging
+from cnnClassifier.config.configuration import PredictionConfig
 import cv2
 from cnnClassifier.utils import load_model
-from cnnClassifier.config.configuration import PredictionConfig
-from pathlib import Path
 
 
 
-class Prediction:
-    def __init__(self, filename: Path, config: PredictionConfig):
+class PredictionPipeline:
+    def __init__(self, filename, config: PredictionConfig):
         self.config = config
         self.filename = filename
-  
 
     def predict(self):
         emotion_dict = {0: "Neutral", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Sad", 5: "Surprised", 6: "Neutral"}
@@ -25,7 +28,8 @@ class Prediction:
         #faces = facecasc.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=10)
         faces = facecasc.detectMultiScale(image, scaleFactor=1.2, minNeighbors=6)
         print("No of faces : ",len(faces))
-        predict = []
+        
+        predict ={}
         i =1
         for (x, y, w, h) in faces:
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 1)
@@ -38,9 +42,21 @@ class Prediction:
             cropped_img = ((cropped_img/255.) - 0.5)*2           
             
             prediction = model.predict(cropped_img)
-            maxindex = int(np.argmax(prediction))                              
-            dic = {"person "+str(i) : emotion_dict[maxindex]}         
-            predict.append(dic)
-            i+=1        
+            maxindex = int(np.argmax(prediction))  
 
-        return predict
+            print("person ",i," : ",emotion_dict[maxindex]) 
+            predict["person "+str(i)] = emotion_dict[maxindex]
+                           
+            cv2.putText(image, emotion_dict[maxindex], (x+10, y-20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+            i+=1 
+       
+        ################################################################
+        # To save predicted imeges
+        #file_name = os.path.basename(self.filename )
+        #dir_name = os.path.dirname(self.filename) 
+        #cv2.imwrite(os.path.join(dir_name, 'pred_'+file_name), image)
+        #################################################################       
+
+        
+        return  predict
+
